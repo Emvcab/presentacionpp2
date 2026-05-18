@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PP2 — Transformación EPH · DGEyC · ITSE 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EC;
+  --bg2:#EAE6DE;
+  --ink:#0D1B2A;
+  --navy:#0F2444;
+  --blue:#1A4480;
+  --teal:#0A5C40;
+  --gold:#B07D0A;
+  --gold2:#D4960A;
+  --red:#922B21;
+  --silver:#6B7585;
+  --border:rgba(13,27,42,0.1);
+  --card:#FFFFFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+
+section{
+  min-height:100vh;scroll-snap-align:start;position:relative;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 6vw 5rem;overflow:hidden;
+}
+
+.sl-num{position:absolute;top:2rem;right:2.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(13,27,42,0.25);letter-spacing:0.15em;}
+.slide-label{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;color:var(--gold2);text-transform:uppercase;margin-bottom:0.8rem;}
+.slide-title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4.5vw,3.6rem);line-height:1.1;margin-bottom:0.5rem;color:var(--navy);}
+.slide-title em{font-style:italic;color:var(--blue);}
+.slide-sub{font-size:1rem;color:var(--silver);margin-bottom:2rem;font-weight:400;}
+
+/* ─── S1 PORTADA ─────────────────────────────────────────── */
+#s1{background:var(--bg);}
+#s1::after{content:'';position:absolute;right:-5vw;top:-5vh;width:50vw;height:110vh;background:radial-gradient(ellipse at 60% 40%,rgba(26,68,128,0.08) 0%,transparent 70%);pointer-events:none;}
+.portada-inner{position:relative;z-index:2;max-width:900px;}
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;color:var(--gold2);border:1px solid rgba(180,120,10,0.4);padding:0.3rem 0.9rem;border-radius:2rem;margin-bottom:2rem;animation:fadeUp 0.6s ease both;}
+.portada-inner h1{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(2.8rem,7vw,5.5rem);line-height:1.05;margin-bottom:1.2rem;color:var(--navy);animation:fadeUp 0.6s 0.1s ease both;}
+.portada-inner h1 span{color:var(--blue);}
+.portada-sub{font-size:clamp(0.95rem,1.8vw,1.2rem);color:var(--silver);max-width:580px;line-height:1.6;margin-bottom:2.5rem;animation:fadeUp 0.6s 0.2s ease both;}
+.portada-meta{display:flex;flex-wrap:wrap;gap:1.5rem;font-size:0.8rem;color:rgba(13,27,42,0.4);animation:fadeUp 0.6s 0.3s ease both;}
+.portada-meta strong{color:var(--gold2);font-weight:600;}
+.portada-stats{position:absolute;right:6vw;bottom:10vh;z-index:2;display:flex;flex-direction:column;gap:1.2rem;animation:fadeUp 0.7s 0.4s ease both;}
+.stat-item{text-align:right;}
+.stat-val{font-size:2.4rem;font-weight:800;color:var(--navy);line-height:1;}
+.stat-lbl{font-size:0.7rem;color:var(--silver);font-family:'DM Mono',monospace;letter-spacing:0.1em;}
+.scroll-hint{position:absolute;bottom:2rem;left:6vw;font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(13,27,42,0.25);letter-spacing:0.14em;display:flex;align-items:center;gap:0.6rem;}
+.scroll-hint::after{content:'';width:40px;height:1px;background:rgba(13,27,42,0.15);}
+
+/* ─── S2 DESAFÍO ──────────────────────────────────────────── */
+#s2{background:var(--bg2);}
+.cards4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:0.6rem;padding:1.4rem 1.5rem;transform:translateY(20px);opacity:0;transition:border-color 0.3s,box-shadow 0.3s;}
+.card.visible{animation:fadeUp 0.5s ease forwards;}
+.card:hover{border-color:rgba(180,120,10,0.3);box-shadow:0 4px 20px rgba(13,27,42,0.08);}
+.card-icon{font-size:1.8rem;margin-bottom:0.8rem;}
+.card-title{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;}
+.card-desc{font-size:0.82rem;color:var(--silver);line-height:1.6;}
+
+/* ─── S3 PROPUESTA ────────────────────────────────────────── */
+#s3{background:var(--bg);}
+.quote-block{border-left:3px solid var(--gold2);background:rgba(180,120,10,0.06);padding:1.4rem 1.8rem;border-radius:0 0.5rem 0.5rem 0;margin-bottom:2rem;}
+.quote-block p{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1rem,2vw,1.3rem);color:var(--navy);line-height:1.6;}
+.quote-block cite{display:block;margin-top:0.6rem;font-size:0.75rem;color:var(--silver);font-style:normal;font-family:'DM Mono',monospace;}
+.pills{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.4rem;}
+.pill{background:var(--bg2);border:1px solid var(--border);border-radius:2rem;padding:0.35rem 0.9rem;font-size:0.78rem;color:var(--silver);}
+.pill strong{color:var(--navy);}
+
+/* ─── S4 DATOS ────────────────────────────────────────────── */
+#s4{background:var(--bg2);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.vars-list{display:flex;flex-direction:column;gap:0.65rem;}
+.var-row{display:grid;grid-template-columns:110px 1fr;gap:0.8rem;align-items:center;}
+.var-chip{background:var(--teal);border-radius:0.3rem;padding:0.3rem 0.5rem;font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;color:#fff;text-align:center;}
+.var-desc{font-size:0.83rem;color:var(--silver);line-height:1.4;}
+.info-box{background:var(--card);border:1px solid var(--border);border-radius:0.6rem;padding:1.4rem;}
+.info-box h4{font-size:0.83rem;color:var(--gold2);margin-bottom:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+.info-box li{font-size:0.83rem;color:var(--silver);line-height:1.7;margin-left:1rem;}
+
+/* ─── S5 PIPELINE ─────────────────────────────────────────── */
+#s5{background:var(--bg);}
+.pipeline{display:flex;align-items:stretch;gap:0;margin-top:1rem;}
+.pipe-step{flex:1;padding:1.5rem 1.2rem;position:relative;transform:translateX(-20px);opacity:0;}
+.pipe-step.visible{animation:fadeRight 0.5s ease forwards;}
+.pipe-letter{font-family:'Instrument Serif',serif;font-size:3rem;font-weight:400;line-height:1;margin-bottom:0.4rem;}
+.pipe-name{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;}
+.pipe-desc{font-size:0.8rem;color:var(--silver);line-height:1.5;}
+.pipe-arrow{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:1.2rem;color:var(--gold2);z-index:2;}
+.pipe-step:nth-child(1){background:#E8F0FB;border:1px solid rgba(26,68,128,0.2);}
+.pipe-step:nth-child(1) .pipe-letter{color:var(--blue);}
+.pipe-step:nth-child(2){background:#E6F4ED;border:1px solid rgba(10,92,64,0.2);}
+.pipe-step:nth-child(2) .pipe-letter{color:var(--teal);}
+.pipe-step:nth-child(3){background:#F0EEE8;border:1px solid var(--border);}
+.pipe-step:nth-child(3) .pipe-letter{color:var(--silver);}
+.pipe-step:nth-child(4){background:#FDF3DD;border:1px solid rgba(180,120,10,0.25);}
+.pipe-step:nth-child(4) .pipe-letter{color:var(--gold2);}
+
+/* ─── S6 LOGROS ───────────────────────────────────────────── */
+#s6{background:var(--bg2);}
+.logros{display:flex;flex-direction:column;gap:0.9rem;max-width:800px;}
+.logro{display:grid;grid-template-columns:48px 1fr;gap:1.2rem;align-items:start;padding:1rem 0;border-bottom:1px solid var(--border);transform:translateY(12px);opacity:0;}
+.logro.visible{animation:fadeUp 0.45s ease forwards;}
+.logro:last-child{border-bottom:none;}
+.logro-icon{font-size:1.6rem;}
+.logro-title{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.2rem;}
+.logro-desc{font-size:0.83rem;color:var(--silver);line-height:1.6;}
+
+/* ─── S7 INDICADORES ──────────────────────────────────────── */
+#s7{background:var(--bg);}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:0.6rem;padding:1.4rem 1.2rem;text-align:center;transform:scale(0.95);opacity:0;border-top:3px solid transparent;}
+.metric.visible{animation:scaleIn 0.4s ease forwards;}
+.metric-val{font-family:'Instrument Serif',serif;font-size:2.6rem;font-weight:400;line-height:1;margin-bottom:0.4rem;}
+.metric-label{font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.25rem;}
+.metric-desc{font-size:0.7rem;color:var(--silver);line-height:1.4;}
+.m-blue{border-top-color:var(--blue);}.m-blue .metric-val{color:var(--blue);}
+.m-teal{border-top-color:var(--teal);}.m-teal .metric-val{color:var(--teal);}
+.m-red{border-top-color:var(--red);}.m-red .metric-val{color:var(--red);}
+.m-gold{border-top-color:var(--gold2);}.m-gold .metric-val{color:var(--gold2);}
+.m-gray{border-top-color:var(--silver);}.m-gray .metric-val{color:var(--silver);}
+
+/* ─── S_SIM SIMULACIÓN HITO 1 ─────────────────────────────── */
+#s_sim{background:var(--bg2);}
+.sim-wrapper{background:var(--card);border:1px solid var(--border);border-radius:0.8rem;overflow:hidden;max-width:900px;}
+.sim-topbar{background:var(--navy);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.5rem;}
+.sim-dot{width:10px;height:10px;border-radius:50%;}
+.sim-title{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(250,250,248,0.5);margin-left:0.5rem;}
+.sim-body{padding:0;font-family:'DM Mono',monospace;font-size:0.8rem;background:#F8F6F0;min-height:340px;position:relative;}
+.sim-steps{padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:0;}
+.sim-line{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.25rem 0;opacity:0;
+  transition:opacity 0.3s;
+}
+.sim-line.show{opacity:1;}
+.sim-line.show.typing .sim-text::after{
+  content:'▋';animation:blink 0.7s infinite;
+}
+.sim-prompt{color:#1A4480;flex-shrink:0;font-weight:700;}
+.sim-text{color:#1A1A2E;white-space:pre-wrap;word-break:break-all;}
+.sim-text.success{color:#0A5C40;font-weight:600;}
+.sim-text.info{color:#1A4480;font-weight:700;}
+.sim-text.muted{color:#6B7585;}
+.sim-text.data{color:#2355A0;}
+.sim-bar-wrap{margin-top:1rem;padding:1.2rem 1.4rem;border-top:1px solid rgba(13,27,42,0.1);}
+.sim-bar-label{font-family:'DM Mono',monospace;font-size:0.72rem;color:#6B7585;margin-bottom:0.5rem;}
+.sim-progress{height:6px;background:rgba(13,27,42,0.1);border-radius:3px;overflow:hidden;}
+.sim-progress-fill{height:100%;width:0%;background:linear-gradient(to right,#1A4480,#0A5C40);border-radius:3px;transition:width 0.4s ease;}
+.sim-results{padding:1.2rem 1.4rem;border-top:1px solid rgba(13,27,42,0.1);display:none;}
+.sim-results.show{display:block;}
+.sim-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:0.75rem;}
+.sim-table th{color:#1A4480;font-weight:700;text-align:left;padding:0.3rem 0.6rem;border-bottom:2px solid rgba(13,27,42,0.15);}
+.sim-table td{color:#1A1A2E;padding:0.25rem 0.6rem;}
+.sim-table tr:nth-child(odd) td{background:rgba(13,27,42,0.03);}
+.sim-controls{padding:1rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:0.8rem;background:var(--bg2);}
+.sim-btn{padding:0.5rem 1.2rem;border-radius:0.3rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;}
+.sim-btn.run{background:var(--blue);color:#fff;}
+.sim-btn.run:hover{background:#2355A0;}
+.sim-btn.rst{background:transparent;color:var(--silver);border:1px solid var(--border);}
+.sim-btn.rst:hover{color:var(--navy);}
+.sim-status{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--silver);align-self:center;}
+
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ─── S8 CIERRE ───────────────────────────────────────────── */
+#s8{background:var(--bg);}
+#s8::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(26,68,128,0.06) 0%,transparent 70%);pointer-events:none;}
+.cierre-inner{position:relative;z-index:2;text-align:center;max-width:820px;margin:0 auto;}
+.cierre-inner blockquote{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.4rem,3.5vw,2.4rem);line-height:1.4;color:var(--navy);margin-bottom:2rem;}
+.cierre-inner blockquote em{font-style:normal;color:var(--blue);}
+.hitos{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:2rem;}
+.hito{background:var(--card);border:1px solid var(--border);border-radius:0.5rem;padding:0.8rem 1.4rem;text-align:center;}
+.hito-num{font-size:0.68rem;color:var(--silver);font-family:'DM Mono',monospace;margin-bottom:0.2rem;}
+.hito-fecha{font-size:1.1rem;font-weight:700;color:var(--blue);}
+.hito-desc{font-size:0.72rem;color:var(--silver);margin-top:0.2rem;}
+
+/* TIMER */
+.timer-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(244,241,236,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:0.65rem 2rem;display:flex;align-items:center;justify-content:center;gap:1rem;z-index:999;}
+.timer-label{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--silver);letter-spacing:0.12em;}
+#tDisp{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;color:var(--navy);letter-spacing:0.05em;min-width:58px;text-align:center;}
+#tDisp.warn{color:var(--gold2);}
+#tDisp.danger{color:var(--red);}
+.tbtn{background:var(--blue);color:#fff;border:none;border-radius:0.3rem;padding:0.32rem 1rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.tbtn:hover{background:#2355A0;}
+.tbtn.sec{background:transparent;color:var(--silver);border:1px solid var(--border);}
+.tbtn.sec:hover{color:var(--navy);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.92);}to{opacity:1;transform:scale(1);}}
+
+@media(max-width:700px){
+  section{padding:3rem 4vw 5rem;}
+  .two-col{grid-template-columns:1fr;}
+  .pipeline{flex-direction:column;}
+  .pipe-arrow{display:none;}
+  .portada-stats{display:none;}
+  #tDisp{font-size:1.1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- S1 PORTADA -->
+<section id="s1">
+  <div class="sl-num">01 / 09</div>
+  <div class="portada-inner">
+    <div class="tag">ITSE · PP2 · 2026</div>
+    <h1>Transformación y<br>automatización de<br>la <span>EPH</span></h1>
+    <p class="portada-sub">Sistema de procesamiento automático de la Encuesta Permanente de Hogares para la Dirección General de Estadística y Censos de Santiago del Estero.</p>
+    <div class="portada-meta">
+      <span>Director <strong>Roberto Ferreira Lesye</strong></span>
+      <span>·</span>
+      <span><strong>Achaval · Cabaña · Gomez · Pinto Villegas</strong></span>
+    </div>
+  </div>
+  <div class="portada-stats">
+    <div class="stat-item"><div class="stat-val">43.703</div><div class="stat-lbl">personas en base nacional</div></div>
+    <div class="stat-item"><div class="stat-val">1.411</div><div class="stat-lbl">personas en Santiago</div></div>
+    <div class="stat-item"><div class="stat-val">~415</div><div class="stat-lbl">hogares encuestados</div></div>
+  </div>
+  <div class="scroll-hint">scroll para continuar</div>
+</section>
+
+<!-- S2 DESAFÍO -->
+<section id="s2">
+  <div class="sl-num">02 / 09</div>
+  <div class="slide-label">El desafío actual</div>
+  <h2 class="slide-title">¿Qué enfrenta la<br>Dirección <em>hoy</em>?</h2>
+  <p class="slide-sub">Cuatro problemas concretos que este proyecto busca resolver.</p>
+  <div class="cards4">
+    <div class="card"><div class="card-icon">📉</div><div class="card-title">Alto rechazo ciudadano</div><div class="card-desc">Los ciudadanos no responden por desconfianza, miedo fiscal o privacidad. Los datos resultan incompletos.</div></div>
+    <div class="card"><div class="card-icon">🔁</div><div class="card-title">Sin reporte automático</div><div class="card-desc">Cada publicación trimestral requiere procesamiento manual que lleva horas. No existe sistema que lo haga solo.</div></div>
+    <div class="card"><div class="card-icon">📦</div><div class="card-title">Sin análisis propio</div><div class="card-desc">Los microdatos de la EPH están disponibles pero no se procesan localmente en la Dirección.</div></div>
+    <div class="card"><div class="card-icon">⏱</div><div class="card-title">Actualización lenta</div><div class="card-desc">Sin un pipeline, los indicadores llegan tarde a quienes toman decisiones de política pública.</div></div>
+  </div>
+</section>
+
+<!-- S3 PROPUESTA -->
+<section id="s3">
+  <div class="sl-num">03 / 09</div>
+  <div class="slide-label">La propuesta</div>
+  <h2 class="slide-title">Lo que la Dirección<br><em>pidió</em></h2>
+  <div class="quote-block">
+    <p>"La Dirección pidió un sistema que descargue, procese y reporte automáticamente los indicadores de la EPH cada vez que el INDEC publica un nuevo trimestre."</p>
+    <cite>— Minuta de reunión · 8 de mayo de 2026</cite>
+  </div>
+  <p style="color:var(--silver);font-size:0.93rem;line-height:1.7;max-width:660px;">El aglomerado <strong style="color:var(--navy)">Santiago del Estero — La Banda (código 18)</strong> encuesta alrededor de 415 hogares y 1.400 personas por trimestre. Con esos datos se mide cuánta gente trabaja, quién busca empleo, los niveles de informalidad y los ingresos reales.</p>
+  <div class="pills">
+    <span class="pill"><strong>Python 3</strong></span>
+    <span class="pill"><strong>pandas · numpy</strong></span>
+    <span class="pill"><strong>Aglomerado 18</strong> — SDE · La Banda</span>
+    <span class="pill"><strong>INDEC</strong> FTP público</span>
+    <span class="pill"><strong>4 trimestres</strong> por año</span>
+  </div>
+</section>
+
+<!-- S4 LOS DATOS -->
+<section id="s4">
+  <div class="sl-num">04 / 09</div>
+  <div class="slide-label">Los datos</div>
+  <h2 class="slide-title">La EPH — <em>variables</em><br>clave del análisis</h2>
+  <div class="two-col">
+    <div class="info-box">
+      <h4>¿Qué es?</h4>
+      <ul>
+        <li>Encuesta trimestral del INDEC sobre condiciones laborales y sociales de la población urbana.</li>
+        <li>Cubre 31 aglomerados urbanos de Argentina.</li>
+        <li><strong style="color:var(--navy)">Aglomerado 18 → Santiago del Estero — La Banda.</strong></li>
+        <li>Dos archivos: <code style="background:var(--bg2);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.75rem;">usu_hogar.txt</code> + <code style="background:var(--bg2);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.75rem;">usu_individual.txt</code></li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-size:0.78rem;color:var(--silver);margin-bottom:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Variables clave del análisis</p>
+      <div class="vars-list">
+        <div class="var-row"><span class="var-chip">ESTADO</span><span class="var-desc">Condición: ocupado / desocupado / inactivo</span></div>
+        <div class="var-row"><span class="var-chip">EMPLEO</span><span class="var-desc">Formalidad: formal / informal</span></div>
+        <div class="var-row"><span class="var-chip">P21</span><span class="var-desc">Ingreso de la ocupación principal</span></div>
+        <div class="var-row"><span class="var-chip">PONDERA</span><span class="var-desc">Ponderador muestral</span></div>
+        <div class="var-row"><span class="var-chip">REALIZADA</span><span class="var-desc">Si el hogar fue entrevistado</span></div>
+        <div class="var-row"><span class="var-chip">IMPUTA</span><span class="var-desc">Si el ingreso fue imputado</span></div>
+        <div class="var-row"><span class="var-chip">AGLOM.</span><span class="var-desc">Código 18 = Santiago del Estero</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 PIPELINE -->
+<section id="s5">
+  <div class="sl-num">05 / 09</div>
+  <div class="slide-label">Qué vamos a hacer</div>
+  <h2 class="slide-title">El <em>pipeline</em> ETL</h2>
+  <p class="slide-sub">Cuatro pasos que se ejecutan en cadena con un solo comando.</p>
+  <div class="pipeline">
+    <div class="pipe-step"><div class="pipe-letter">E</div><div class="pipe-name">Extracción</div><div class="pipe-desc">Descarga automática desde el FTP del INDEC al detectar nuevo trimestre.</div><div class="pipe-arrow">→</div></div>
+    <div class="pipe-step"><div class="pipe-letter">T</div><div class="pipe-name">Transformación</div><div class="pipe-desc">Filtrar por aglomerado 18, decodificar variables y calcular indicadores.</div><div class="pipe-arrow">→</div></div>
+    <div class="pipe-step"><div class="pipe-letter">L</div><div class="pipe-name">Carga</div><div class="pipe-desc">Dataset limpio guardado en formato estructurado listo para analizar.</div><div class="pipe-arrow">→</div></div>
+    <div class="pipe-step"><div class="pipe-letter">R</div><div class="pipe-name">Reporte</div><div class="pipe-desc">Indicadores calculados con comparación trimestral y visualizaciones automáticas.</div></div>
+  </div>
+</section>
+
+<!-- S6 LOGROS -->
+<section id="s6">
+  <div class="sl-num">06 / 09</div>
+  <div class="slide-label">Qué se va a lograr</div>
+  <h2 class="slide-title">Cuatro <em>resultados</em><br>concretos</h2>
+  <div class="logros">
+    <div class="logro"><div class="logro-icon">⚡</div><div><div class="logro-title">Un proceso que tarda minutos en lugar de horas</div><div class="logro-desc">Lo que hoy requiere horas de trabajo manual pasa a ser un solo comando que cualquier persona puede ejecutar.</div></div></div>
+    <div class="logro"><div class="logro-icon">📊</div><div><div class="logro-title">Indicadores del mercado laboral actualizados cada trimestre</div><div class="logro-desc">Desocupación, informalidad, actividad y más — listos automáticamente cada vez que el INDEC publica nuevos datos.</div></div></div>
+    <div class="logro"><div class="logro-icon">🔍</div><div><div class="logro-title">Un modelo que ayuda a entender la no respuesta de ingresos</div><div class="logro-desc">El sistema identifica el perfil de quiénes no responden cuánto ganan y estima esos valores faltantes.</div></div></div>
+    <div class="logro"><div class="logro-icon">📋</div><div><div class="logro-title">Documentación completa para que la Dirección siga usando el sistema</div><div class="logro-desc">Manual de uso, código documentado y reporte final entregado en julio de 2026.</div></div></div>
+  </div>
+</section>
+
+<!-- S7 INDICADORES -->
+<section id="s7">
+  <div class="sl-num">07 / 09</div>
+  <div class="slide-label">Producto final</div>
+  <h2 class="slide-title">Indicadores <em>reales</em><br>4° trimestre 2025</h2>
+  <p class="slide-sub">Santiago del Estero — La Banda · Calculados con ponderadores INDEC</p>
+  <div class="metrics-grid">
+    <div class="metric m-blue"><div class="metric-val">46,1%</div><div class="metric-label">Tasa de actividad</div><div class="metric-desc">Personas que trabajan o buscan trabajo</div></div>
+    <div class="metric m-teal"><div class="metric-val">45,8%</div><div class="metric-label">Tasa de empleo</div><div class="metric-desc">Personas que tienen trabajo</div></div>
+    <div class="metric m-red"><div class="metric-val">0,6%</div><div class="metric-label">Desocupación</div><div class="metric-desc">Buscan trabajo y no encuentran</div></div>
+    <div class="metric m-gold"><div class="metric-val">55,7%</div><div class="metric-label">Informalidad laboral</div><div class="metric-desc">Trabajadores sin registro ni aportes</div></div>
+    <div class="metric m-gray"><div class="metric-val">1,8%</div><div class="metric-label">No resp. ingresos</div><div class="metric-desc">Omitieron su nivel de ingresos</div></div>
+  </div>
+</section>
+
+<!-- S_SIM SIMULACIÓN HITO 1 -->
+<section id="s_sim">
+  <div class="sl-num">08 / 09</div>
+  <div class="slide-label">Hito 1 — 18 de mayo</div>
+  <h2 class="slide-title">Simulación del<br><em>preprocesamiento</em></h2>
+  <p class="slide-sub">Así funciona el proceso de recolección y limpieza de datos en la práctica.</p>
+
+  <div style="display:flex;gap:0.7rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <div style="background:#E8F0FB;border:1px solid rgba(26,68,128,0.25);border-radius:0.4rem;padding:0.5rem 1rem;font-size:0.78rem;color:#1A4480;font-family:'DM Mono',monospace;">
+      ✓ <strong>El proceso ya existe</strong> — ejecutado en el notebook del Hito 1
+    </div>
+    <div style="background:#FDF3DD;border:1px solid rgba(180,120,10,0.3);border-radius:0.4rem;padding:0.5rem 1rem;font-size:0.78rem;color:#7D5000;font-family:'DM Mono',monospace;">
+      ⏳ <strong>El comando <code>pipeline.py</code></strong> — se construirá en el Hito 2
+    </div>
+  </div>
+
+  <div class="sim-wrapper">
+    <div class="sim-topbar">
+      <div class="sim-dot" style="background:#FF5F56;"></div>
+      <div class="sim-dot" style="background:#FFBD2E;"></div>
+      <div class="sim-dot" style="background:#27C93F;"></div>
+      <span class="sim-title">PP2_Hito1_Preprocesamiento_EPH_4T2025.py</span>
+    </div>
+    <div class="sim-body">
+      <div class="sim-steps" id="simLines"></div>
+      <div class="sim-bar-wrap" id="simBarWrap" style="display:none;">
+        <div class="sim-bar-label" id="simBarLabel">Procesando...</div>
+        <div class="sim-progress"><div class="sim-progress-fill" id="simFill"></div></div>
+      </div>
+      <div class="sim-results" id="simResults">
+        <table class="sim-table">
+          <thead><tr><th>Indicador</th><th>Valor</th><th>Variable</th></tr></thead>
+          <tbody>
+            <tr><td>Tasa de actividad</td><td style="color:#0A5C40;font-weight:700;">46.1%</td><td style="color:#2355A0;">ESTADO isin [1,2]</td></tr>
+            <tr><td>Tasa de empleo</td><td style="color:#0A5C40;font-weight:700;">45.8%</td><td style="color:#2355A0;">ESTADO == 1</td></tr>
+            <tr><td>Tasa de desocupación</td><td style="color:#922B21;font-weight:700;">0.6%</td><td style="color:#2355A0;">ESTADO == 2 / PEA</td></tr>
+            <tr><td>Informalidad laboral</td><td style="color:#7D5000;font-weight:700;">55.7%</td><td style="color:#2355A0;">EMPLEO == 2</td></tr>
+            <tr><td>No resp. ingresos</td><td style="color:#4A5568;font-weight:700;">1.8%</td><td style="color:#2355A0;">P21 == -9</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="sim-controls">
+      <button class="sim-btn run" id="simRunBtn" onclick="runSim()">▶ Ejecutar pipeline</button>
+      <button class="sim-btn rst" onclick="resetSim()">↺ Reiniciar</button>
+      <span class="sim-status" id="simStatus">Listo para ejecutar</span>
+    </div>
+  </div>
+</section>
+
+<!-- S8 CIERRE -->
+<section id="s8">
+  <div class="sl-num">09 / 09</div>
+  <div class="cierre-inner">
+    <div class="slide-label" style="text-align:center;margin-bottom:1.5rem;">Perspectiva de cierre</div>
+    <blockquote>"Vamos a convertir los datos de la encuesta en información lista para usar — <em>automáticamente</em>, cada trimestre, sin trabajo manual."</blockquote>
+    <p style="color:var(--silver);font-size:0.88rem;max-width:520px;margin:0 auto 1.5rem;line-height:1.7;">Achaval · Cabaña · Gomez · Pinto Villegas<br>DGEyC Santiago del Estero · ITSE 2026</p>
+    <div class="hitos">
+      <div class="hito"><div class="hito-num">Hito 1</div><div class="hito-fecha">18 mayo</div><div class="hito-desc">Datos y preprocesamiento</div></div>
+      <div class="hito"><div class="hito-num">Hito 2</div><div class="hito-fecha">8 junio</div><div class="hito-desc">EDA y pipeline automático</div></div>
+      <div class="hito"><div class="hito-num">Hito 3</div><div class="hito-fecha">6 julio</div><div class="hito-desc">Modelo y presentación final</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMER -->
+<div class="timer-bar">
+  <span class="timer-label">presentación</span>
+  <span id="tDisp">10:00</span>
+  <button class="tbtn" onclick="startTimer()">▶ Iniciar</button>
+  <button class="tbtn sec" onclick="resetTimer()">↺</button>
+</div>
+
+<script>
+// ── TIMER ────────────────────────────────────────────────────
+let t=600,iv=null;
+const d=document.getElementById('tDisp');
+function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+function upd(){d.textContent=fmt(t);d.className=t<=120&&t>60?'warn':t<=60?'danger':'';}
+function startTimer(){if(iv){clearInterval(iv);iv=null;return;}iv=setInterval(()=>{if(t<=0){clearInterval(iv);iv=null;return;}t--;upd();},1000);}
+function resetTimer(){clearInterval(iv);iv=null;t=600;upd();}
+
+// ── SIMULACIÓN ───────────────────────────────────────────────
+const LINES = [
+  {p:"$",t:"python pipeline.py --trimestre 4 --anio 2025",cls:""},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[1/6] Conectando al servidor del INDEC...",cls:"info"},
+  {p:"",t:"     ftp.indec.gob.ar → EPH_usu_4_Trim_2025_txt.zip",cls:"muted"},
+  {p:"✓",t:"Archivo descargado correctamente (4.2 MB)",cls:"success"},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[2/6] Descomprimiendo archivos...",cls:"info"},
+  {p:"✓",t:"usu_individual_T425.txt  →  43.703 filas × 235 columnas",cls:"success"},
+  {p:"✓",t:"usu_hogar_T425.txt       →  15.534 filas × 98 columnas",cls:"success"},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[3/6] Filtrando aglomerado 18 — Santiago del Estero...",cls:"info"},
+  {p:"✓",t:"Personas seleccionadas:  1.411  (de 43.703 en total)",cls:"success"},
+  {p:"✓",t:"Hogares seleccionados:   415    (de 15.534 en total)",cls:"success"},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[4/6] Decodificando variables...",cls:"info"},
+  {p:"",t:"     ESTADO: {0:'No resp.', 1:'Ocupado', 2:'Desocup.', 3:'Inactivo', 4:'<10 años'}",cls:"data"},
+  {p:"",t:"     EMPLEO: {1:'Formal', 2:'Informal', 9:'Ns/Nr'}",cls:"data"},
+  {p:"✓",t:"Variables decodificadas correctamente",cls:"success"},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[5/6] Calculando indicadores con ponderadores PONDERA...",cls:"info"},
+  {p:"",t:"",cls:"muted"},
+  {p:"▶",t:"[6/6] Exportando resultados...",cls:"info"},
+  {p:"✓",t:"EPH_Indicadores_SDE_4T2025.xlsx generado correctamente",cls:"success"},
+  {p:"",t:"",cls:"muted"},
+  {p:"✓",t:"Pipeline completado en 3.2 segundos.",cls:"success"},
+];
+
+let simRunning=false;
+let simTimeouts=[];
+
+function resetSim(){
+  simTimeouts.forEach(clearTimeout);
+  simTimeouts=[];
+  simRunning=false;
+  document.getElementById('simLines').innerHTML='';
+  document.getElementById('simBarWrap').style.display='none';
+  document.getElementById('simFill').style.width='0%';
+  document.getElementById('simResults').classList.remove('show');
+  document.getElementById('simStatus').textContent='Listo para ejecutar';
+  document.getElementById('simRunBtn').disabled=false;
+}
+
+function runSim(){
+  if(simRunning) return;
+  simRunning=true;
+  document.getElementById('simRunBtn').disabled=true;
+  document.getElementById('simStatus').textContent='Ejecutando...';
+
+  const container=document.getElementById('simLines');
+  const barWrap=document.getElementById('simBarWrap');
+  const fill=document.getElementById('simFill');
+  const barLabel=document.getElementById('simBarLabel');
+  const results=document.getElementById('simResults');
+
+  let delay=0;
+  LINES.forEach((l,i)=>{
+    const to=setTimeout(()=>{
+      const div=document.createElement('div');
+      div.className='sim-line show';
+      div.innerHTML=`<span class="sim-prompt">${l.p}</span><span class="sim-text ${l.cls}">${l.t}</span>`;
+      container.appendChild(div);
+      container.scrollTop=container.scrollHeight;
+
+      // mostrar barra en paso 5
+      if(i===19){
+        barWrap.style.display='block';
+        barLabel.textContent='Calculando indicadores con ponderadores...';
+        let pct=0;
+        const fillInt=setInterval(()=>{
+          pct+=4;
+          fill.style.width=Math.min(pct,100)+'%';
+          if(pct>=100){
+            clearInterval(fillInt);
+            barLabel.textContent='✓ Indicadores calculados';
+          }
+        },60);
+      }
+
+      // mostrar tabla al final
+      if(i===LINES.length-1){
+        setTimeout(()=>{
+          results.classList.add('show');
+          document.getElementById('simStatus').textContent='✓ Completado en 3.2s';
+        },600);
+      }
+    },delay);
+    simTimeouts.push(to);
+    delay += l.t===''?80:180;
+  });
+}
+
+// ── SCROLL ANIMATIONS ────────────────────────────────────────
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const delay=Number(e.target.dataset.d||0);
+      setTimeout(()=>e.target.classList.add('visible'),delay);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.15});
+
+document.querySelectorAll('.card').forEach((el,i)=>{el.dataset.d=i*90;obs.observe(el);});
+document.querySelectorAll('.pipe-step').forEach((el,i)=>{el.dataset.d=i*120;obs.observe(el);});
+document.querySelectorAll('.logro').forEach((el,i)=>{el.dataset.d=i*100;obs.observe(el);});
+document.querySelectorAll('.metric').forEach((el,i)=>{el.dataset.d=i*80;obs.observe(el);});
+</script>
+</body>
+</html>
